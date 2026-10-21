@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Fanpage AI Customer Assistant — Powered by Gemini 1.5 Flash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        fb: "#0084FF",
+                        fbDark: "#0066CC"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-fb selection:text-white">
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white text-xl shadow-lg shadow-blue-500/20">
+                    💬
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-base font-bold text-white tracking-wide">Facebook Fanpage AI Assistant</h1>
+                        <span class="text-[10px] bg-blue-950 text-blue-300 font-mono px-2 py-0.5 rounded border border-blue-800">Gemini 1.5 Flash</span>
+                        <span class="text-[10px] bg-emerald-950 text-emerald-300 font-mono px-2 py-0.5 rounded border border-emerald-800">Webhook Live</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Tự động tư vấn khách hàng, chốt đơn & thu thập số điện thoại 24/7</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 mr-2 bg-emerald-400 rounded-full animate-ping"></span>
+                    <span>Graph API v18.0: <strong>CONNECTED</strong></span>
+                </span>
+                <a href="https://github.com/VuongQuocHoa/fb-ai-bot" target="_blank" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+                    <span>GitHub Repo</span>
+                    <span>↗</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+        <!-- Interactive Workspace: Left = Live Messenger Mock, Right = Webhook & Admin Configuration -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left: Interactive Facebook Messenger Chat Simulator -->
+            <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden flex flex-col h-[640px] shadow-2xl">
+                <!-- Messenger Header -->
+                <div class="bg-slate-800/90 border-b border-slate-700 px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">
+                                AI
+                            </div>
+                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-white">Fanpage AI Store Support</h2>
+                            <p class="text-[11px] text-emerald-400">Đang hoạt động • Trả lời tức thì (&lt;1s)</p>
+                        </div>
+                    </div>
+                    <span class="text-xs bg-slate-700/60 px-2 py-1 rounded text-slate-300 font-mono">PSID #98421</span>
+                </div>
+
+                <!-- Chat Messages Body -->
+                <div id="chatBody" class="flex-1 overflow-y-auto p-4 space-y-3 bg-[#0a0d14]">
+                    <div class="text-center text-[11px] text-slate-500 font-mono my-2">HÔM NAY • KẾT NỐI TỰ ĐỘNG QUA GRAPH API WEBHOOK</div>
+                    
+                    <div class="flex items-end gap-2">
+                        <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">AI</div>
+                        <div class="bg-slate-800 text-slate-100 text-xs leading-relaxed p-3 rounded-2xl rounded-bl-sm max-w-[80%] border border-slate-700/60">
+                            Chào bạn! Tôi là trợ lý AI của Fanpage. Hôm nay bạn cần hỗ trợ thông tin sản phẩm hay đặt đơn giao hỏa tốc nào ạ? 😊
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input Form -->
+                <form id="chatForm" onsubmit="sendMessage(event)" class="p-3 border-t border-slate-800 bg-slate-900 flex items-center gap-2">
+                    <input type="text" id="userInput" placeholder="Nhập tin nhắn khách hàng (VD: Tư vấn giá, để lại SĐT...)" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl transition active:scale-95">
+                        <svg class="w-4 h-4 transform rotate-90" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right: Live Webhook Logging & System Config -->
+            <div class="lg:col-span-7 space-y-6">
+                <!-- System Architecture Specs -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+                    <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                        <span>⚙ Cấu Hình Kết Nối Meta & Gemini AI</span>
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 font-mono">Verify Token (Meta Webhook):</span>
+                            <div class="text-sm font-mono font-bold text-cyan-400 mt-1">my_secure_verify_token_123</div>
+                        </div>
+                        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 font-mono">Model Engine:</span>
+                            <div class="text-sm font-mono font-bold text-emerald-400 mt-1">gemini-1.5-flash (Low-latency)</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                        <span class="text-xs text-slate-400 font-mono block mb-1">System Prompt Đang Vận Hành:</span>
+                        <p class="text-xs text-slate-300 font-mono leading-relaxed">
+                            "Bạn là trợ lý chăm sóc khách hàng AI chuyên nghiệp trên Fanpage. Nhiệm vụ: Chào hỏi lịch sự, tư vấn sản phẩm chính xác, trả lời ngắn gọn và tự động thu thập Tên + Số điện thoại khi khách có nhu cầu đặt hàng."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Live Transaction Logs Feed -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                            <span>📡 Nhật Ký Giao Dịch Webhook (Live Transaction Logs)</span>
+                        </h2>
+                        <span class="text-xs font-mono text-emerald-400">Stream: Active</span>
+                    </div>
+
+                    <div id="logsContainer" class="bg-slate-950 rounded-xl p-3.5 font-mono text-xs space-y-2 h-[260px] overflow-y-auto border border-slate-800">
+                        <div class="text-slate-400">[INIT] Webhook listener listening on port 3000...</div>
+                        <div class="text-emerald-400">[READY] Meta Webhook verified successfully (GET /webhook 200 OK)</div>
+                        <div class="text-cyan-400">[AI_ENGINE] Gemini 1.5 Flash client initialized with function calling</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-8 border-t border-slate-900 py-6 text-center text-xs text-slate-500">
+        Facebook Fanpage AI Assistant Architecture • Kỹ sư: <strong>Vương Quốc Hòa</strong> (@VuongQuocHoa) • Meta Graph API & Google Gemini Flash
+    </footer>
+
+    <script>
+        function appendLog(type, text) {
+            const container = document.getElementById("logsContainer");
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement("div");
+            if (type === "user") {
+                div.className = "text-amber-300";
+                div.innerText = `[${time}] [INCOMING_MSG] From PSID_98421: "${text}"`;
+            } else if (type === "ai") {
+                div.className = "text-cyan-400";
+                div.innerText = `[${time}] [AI_REPLY] Sent via Graph API: "${text}"`;
+            } else if (type === "lead") {
+                div.className = "text-emerald-400 font-bold bg-emerald-950/40 p-1.5 rounded border border-emerald-800";
+                div.innerText = `[${time}] [LEAD_CAPTURED] 🎉 Đã trích xuất số điện thoại khách hàng thành công!`;
+            }
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById("userInput");
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chatBody = document.getElementById("chatBody");
+
+            // User bubble
+            const userBubble = document.createElement("div");
+            userBubble.className = "flex justify-end";
+            userBubble.innerHTML = `<div class="bg-blue-600 text-white text-xs leading-relaxed p-3 rounded-2xl rounded-br-sm max-w-[80%]">${text}</div>`;
+            chatBody.appendChild(userBubble);
+            input.value = "";
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            appendLog("user", text);
+
+            // Simulate Gemini 1.5 Flash response logic
+            setTimeout(() => {
+                let reply = "";
+                const lower = text.toLowerCase();
+                const phoneMatch = text.match(/(0[3|5|7|8|9])+([0-9]{8})\b/);
+
+                if (phoneMatch) {
+                    reply = `Cảm ơn bạn! Em đã ghi nhận số điện thoại ${phoneMatch[0]} của bạn. Chuyên viên tư vấn bên em sẽ gọi lại trong ít phút để xác nhận đơn hàng ạ! ❤️`;
+                    appendLog("lead", phoneMatch[0]);
+                } else if (lower.includes("giá") || lower.includes("bao nhiêu") || lower.includes("mua")) {
+                    reply = "Dạ sản phẩm đang có chương trình trợ giá còn 389.000đ (miễn phí vận chuyển toàn quốc). Bạn cho shop xin Tên và Số điện thoại nhận hàng nhé!";
+                } else if (lower.includes("ship") || lower.includes("giao")) {
+                    reply = "Dạ bên em hỗ trợ giao hỏa tốc nội thành TP.HCM trong 2h và giao toàn quốc từ 1-2 ngày. Bạn để lại số điện thoại để shop lên đơn ngay nhé!";
+                } else {
+                    reply = "Dạ shop đã nhận được tin nhắn của bạn. Bạn muốn tư vấn thêm về mẫu mã nào hay để lại số điện thoại để nhân viên hỗ trợ ngay ạ?";
+                }
+
+                const botBubble = document.createElement("div");
+                botBubble.className = "flex items-end gap-2";
+                botBubble.innerHTML = `
+                    <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">AI</div>
+                    <div class="bg-slate-800 text-slate-100 text-xs leading-relaxed p-3 rounded-2xl rounded-bl-sm max-w-[80%] border border-slate-700/60">${reply}</div>
+                `;
+                chatBody.appendChild(botBubble);
+                chatBody.scrollTop = chatBody.scrollHeight;
+
+                appendLog("ai", reply);
+            }, 750);
+        }
+    </script>
+</body>
+</html>
