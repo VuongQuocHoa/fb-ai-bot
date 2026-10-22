@@ -1,5 +1,12 @@
 # 💬 Facebook Fanpage AI Customer Assistant (Google Gemini 1.5 Flash)
 
+<div align="center">
+
+[![Live Demo on Render](https://img.shields.io/badge/🌐_Live_Demo-Render-00f0ff?style=for-the-badge&logo=render&logoColor=white)](https://vuongquochoa-fb-ai-bot.onrender.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/VuongQuocHoa/fb-ai-bot)
+
+</div>
+
 > **Trợ lý bán hàng thông minh tự động hóa chăm sóc khách hàng và thu thập khách tiềm năng (Lead) 24/7**
 
 Hệ thống bot AI tích hợp Facebook Messenger qua Graph API Webhooks, sử dụng mô hình ngôn ngữ lớn **Google Gemini 1.5 Flash** để tư vấn sản phẩm, thấu hiểu ngữ cảnh khách hàng và tự động thu thập tên, số điện thoại đặt hàng 24/7.
